@@ -1,0 +1,283 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Click Enter for a Secret</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;700&display=swap" rel="stylesheet">
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/tone/14.8.49/Tone.min.js"></script>
+    <style>
+        body {
+            font-family: 'Inter', sans-serif;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            min-height: 100vh;
+            background-color: #0d0d0d;
+            color: #e2e8f0;
+            margin: 0;
+            overflow: hidden;
+            position: relative;
+            transition: background-color 0.1s ease-out;
+        }
+
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(20px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+
+        @keyframes shake {
+            0% { transform: translate(0, 0); }
+            25% { transform: translate(-2px, 2px); }
+            50% { transform: translate(2px, -2px); }
+            75% { transform: translate(-2px, -2px); }
+            100% { transform: translate(0, 0); }
+        }
+
+        .container {
+            text-align: center;
+            padding: 2.5rem;
+            border-radius: 1rem;
+            max-width: 90%;
+            width: 500px;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            min-height: 300px;
+            animation: fadeIn 1s ease-out;
+            position: relative;
+            z-index: 100;
+        }
+
+        .jumpscare-image {
+            max-width: 100%;
+            height: auto;
+            border-radius: 0.75rem;
+            display: none;
+            transition: opacity 0.1s ease-in-out;
+            opacity: 0;
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            z-index: 1000;
+        }
+        .jumpscare-image.active {
+            display: block;
+            opacity: 1;
+            animation: jumpscareZoom 0.15s ease-out forwards;
+        }
+
+        @keyframes jumpscareZoom {
+            0% { transform: translate(-50%, -50%) scale(0.9); }
+            100% { transform: translate(-50%, -50%) scale(1); }
+        }
+
+        .cloned-jumpscare-image {
+            position: absolute;
+            opacity: 0;
+            transition: opacity 0.5s ease-out, transform 0.5s ease-out;
+            z-index: 50;
+            pointer-events: none;
+        }
+        .cloned-jumpscare-image.show {
+            opacity: 0.8;
+        }
+
+        .professional-button {
+            background-color: #3b3b3b;
+            color: #f0f0f0;
+            padding: 0.8rem 2.5rem;
+            border-radius: 9999px;
+            font-size: 1.25rem;
+            font-weight: bold;
+            cursor: pointer;
+            transition: background-color 0.3s ease, transform 0.1s ease, box-shadow 0.3s ease;
+            border: none;
+            box-shadow: 0px 3px 6px rgba(0, 0, 0, 0.6),
+                        inset 0px 1px 1px rgba(255, 255, 255, 0.1),
+                        inset 0px -1px 1px rgba(0, 0, 0, 0.3);
+            letter-spacing: 0.05em;
+            animation: pulse 2s infinite ease-in-out;
+        }
+        .professional-button:hover {
+            background-color: #4a4a4a;
+            transform: translateY(-2px) scale(1.02);
+            box-shadow: 0px 5px 10px rgba(0, 0, 0, 0.7),
+                        inset 0px 1px 1px rgba(255, 255, 255, 0.15),
+                        inset 0px -1px 1px rgba(0, 0, 0, 0.4);
+            animation: none;
+        }
+        .professional-button:active {
+            transform: translateY(0);
+            box-shadow: 0px 2px 4px rgba(0, 0, 0, 0.5),
+                        inset 0px 0px 1px rgba(255, 255, 255, 0.05),
+                        inset 0px 0px 1px rgba(0, 0, 0, 0.2);
+        }
+
+        @keyframes pulse {
+            0% { transform: scale(1); box-shadow: 0px 3px 6px rgba(0, 0, 0, 0.6), inset 0px 1px 1px rgba(255, 255, 255, 0.1), inset 0px -1px 1px rgba(0, 0, 0, 0.3); }
+            50% { transform: scale(1.03); box-shadow: 0px 6px 12px rgba(0, 0, 0, 0.8), inset 0px 1px 1px rgba(255, 255, 255, 0.15), inset 0px -1px 1px rgba(0, 0, 0, 0.4); }
+            100% { transform: scale(1); box-shadow: 0px 3px 6px rgba(0, 0, 0, 0.6), inset 0px 1px 1px rgba(255, 255, 255, 0.1), inset 0px -1px 1px rgba(0, 0, 0, 0.3); }
+        }
+
+        .message-box {
+            background-color: #4a5568;
+            color: #e2e8f0;
+            padding: 1rem;
+            border-radius: 0.5rem;
+            margin-top: 1rem;
+            display: none;
+            width: 100%;
+            box-sizing: border-box;
+            word-wrap: break-word;
+            animation: fadeIn 0.5s ease-out;
+        }
+        .message-box.active {
+            display: block;
+        }
+
+        @keyframes fadeInTitle {
+            from { opacity: 0; transform: translateY(-20px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+
+        .main-title {
+            font-size: 3rem;
+            margin-bottom: 2rem;
+            background: linear-gradient(45deg, #e0e0e0, #a0a0a0, #707070);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+            color: transparent;
+            text-shadow:
+                0px 1px 0px rgba(255,255,255,0.05),
+                0px 2px 0px rgba(0,0,0,0.7),
+                0px 3px 2px rgba(0,0,0,0.5),
+                0px 4px 4px rgba(0,0,0,0.3);
+            animation: fadeInTitle 1.5s ease-out;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1 class="font-bold main-title">Click Enter for a Secret</h1>
+        <button id="jumpscareButton" class="professional-button">
+            Enter
+        </button>
+        <img id="jumpscareImage" src="https://media1.tenor.com/images/65f81531cfafef3e42113c279ec4cd17/tenor.gif?itemid=16800435" alt="Jumpscare Image" class="jumpscare-image">
+        <audio id="jumpscareAudio" src="1.mp3" preload="auto"></audio>
+        <div id="messageBox" class="message-box"></div>
+    </div>
+
+    <script>
+        const jumpscareButton = document.getElementById('jumpscareButton');
+        const jumpscareImage = document.getElementById('jumpscareImage');
+        const jumpscareAudio = document.getElementById('jumpscareAudio');
+        const messageBox = document.getElementById('messageBox');
+        const body = document.body;
+
+        const synth = new Tone.MembraneSynth().toDestination();
+
+        let cloningInterval;
+        let flashInterval;
+
+        function showMessage(message, type = 'info') {
+            messageBox.textContent = message;
+            messageBox.className = 'message-box active';
+            if (type === 'error') {
+                messageBox.style.backgroundColor = '#c53030';
+            } else {
+                messageBox.style.backgroundColor = '#4a5568';
+            }
+        }
+
+        function startCloningJumpscare() {
+            cloningInterval = setInterval(() => {
+                const clone = jumpscareImage.cloneNode(true);
+                clone.classList.remove('jumpscare-image', 'active');
+                clone.classList.add('cloned-jumpscare-image', 'show');
+
+                const viewportWidth = window.innerWidth;
+                const viewportHeight = window.innerHeight;
+                clone.style.left = `${Math.random() * viewportWidth}px`;
+                clone.style.top = `${Math.random() * viewportHeight}px`;
+
+                const randomScale = 0.7 + Math.random() * 1.1;
+                clone.style.transform = `translate(-50%, -50%) scale(${randomScale}) rotate(${Math.random() * 360}deg)`;
+
+                document.body.appendChild(clone);
+
+                setTimeout(() => {
+                    clone.style.opacity = '0';
+                    clone.style.transform += ` scale(0.1)`;
+                    setTimeout(() => {
+                        clone.remove();
+                    }, 500);
+                }, 3000);
+            }, 100);
+        }
+
+        function startFlashing() {
+            let isFlashingRed = false;
+            flashInterval = setInterval(() => {
+                if (isFlashingRed) {
+                    body.style.backgroundColor = '#0d0d0d';
+                } else {
+                    body.style.backgroundColor = '#1a0000';
+                }
+                body.style.animation = 'shake 0.1s ease-out forwards';
+                setTimeout(() => {
+                    body.style.animation = '';
+                }, 100);
+                isFlashingRed = !isFlashingRed;
+            }, 150);
+        }
+
+        jumpscareButton.addEventListener('click', async () => {
+            jumpscareButton.style.display = 'none';
+            messageBox.classList.remove('active');
+
+            body.style.animation = 'shake 0.2s ease-out forwards';
+            body.style.backgroundColor = '#330000';
+            setTimeout(() => {
+                body.style.backgroundColor = '#0d0d0d';
+                body.style.animation = '';
+            }, 200);
+
+            jumpscareImage.classList.add('active');
+
+            try {
+                await Tone.start();
+                synth.triggerAttackRelease("C1", "8n", Tone.now(), 1);
+                synth.triggerAttackRelease("G#1", "8n", Tone.now() + 0.05, 1);
+                synth.triggerAttackRelease("C2", "8n", Tone.now() + 0.1, 1);
+
+                jumpscareAudio.volume = 1;
+                jumpscareAudio.currentTime = 0;
+                await jumpscareAudio.play();
+            } catch (error) {
+                console.error("Error playing sound:", error);
+                showMessage("Could not play sound. Please ensure your browser allows autoplay or interact with the page first.", 'error');
+            }
+
+            setTimeout(() => {
+                startCloningJumpscare();
+                startFlashing();
+            }, 2000);
+
+            setTimeout(() => {
+                jumpscareImage.classList.remove('active');
+                jumpscareButton.style.display = 'block';
+                jumpscareAudio.pause();
+            }, 4000);
+        });
+
+        window.onload = () => {
+            showMessage("Are you sure you want to proceed?");
+        };
+    </script>
+</body>
+</html>
