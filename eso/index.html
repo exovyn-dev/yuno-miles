@@ -1,0 +1,322 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Esoterica | esoteric.win</title>
+<style>
+@import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600&display=swap');
+
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+    font-family: 'Inter', sans-serif;
+}
+
+body {
+    background-color: #fafafa;
+    color: #000000;
+    min-height: 100vh;
+    overflow-x: hidden;
+    position: relative;
+}
+
+.background-elements {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100vw;
+    height: 100vh;
+    z-index: -1;
+    overflow: hidden;
+    background: #ffffff;
+}
+
+.blur-shape {
+    position: absolute;
+    border-radius: 50%;
+    filter: blur(120px);
+    opacity: 0.6;
+}
+
+.shape-1 {
+    top: -15%;
+    left: -10%;
+    width: 600px;
+    height: 600px;
+    background: #e0e0e0;
+}
+
+.shape-2 {
+    bottom: -20%;
+    right: -10%;
+    width: 700px;
+    height: 700px;
+    background: #eae5df;
+}
+
+.container {
+    max-width: 1200px;
+    margin: 0 auto;
+    padding: 0 5%;
+}
+
+header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 2.5rem 0;
+}
+
+.brand {
+    font-size: 1.25rem;
+    font-weight: 500;
+    letter-spacing: -0.5px;
+    display: flex;
+    align-items: baseline;
+    gap: 0.5rem;
+}
+
+.brand-sub {
+    font-size: 0.85rem;
+    color: #666666;
+    font-weight: 400;
+}
+
+.nav-link {
+    text-decoration: none;
+    color: #000000;
+    font-weight: 500;
+    font-size: 0.95rem;
+    padding: 0.75rem 1.5rem;
+    border-radius: 8px;
+    background: rgba(255, 255, 255, 0.4);
+    backdrop-filter: blur(12px);
+    -webkit-backdrop-filter: blur(12px);
+    border: 1px solid rgba(0, 0, 0, 0.05);
+    transition: all 0.3s ease;
+}
+
+.nav-link:hover {
+    background: rgba(0, 0, 0, 0.03);
+}
+
+.hero {
+    text-align: center;
+    padding: 8rem 0 6rem;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+}
+
+.hero h1 {
+    font-size: 4.5rem;
+    font-weight: 300;
+    margin-bottom: 1.5rem;
+    letter-spacing: -2px;
+    line-height: 1.05;
+    color: #000000;
+}
+
+.hero p {
+    font-size: 1.25rem;
+    color: #555555;
+    margin-bottom: 3.5rem;
+    max-width: 550px;
+    font-weight: 300;
+    line-height: 1.6;
+}
+
+.button-group {
+    display: flex;
+    gap: 1.5rem;
+}
+
+.btn-solid {
+    padding: 1.25rem 2.5rem;
+    border-radius: 12px;
+    background: #000000;
+    color: #ffffff;
+    text-decoration: none;
+    font-weight: 500;
+    font-size: 1rem;
+    border: 1px solid #000000;
+    transition: all 0.3s ease;
+}
+
+.btn-solid:hover {
+    background: transparent;
+    color: #000000;
+}
+
+.btn-glass {
+    padding: 1.25rem 2.5rem;
+    border-radius: 12px;
+    background: rgba(255, 255, 255, 0.5);
+    backdrop-filter: blur(16px);
+    -webkit-backdrop-filter: blur(16px);
+    border: 1px solid rgba(255, 255, 255, 0.8);
+    color: #000000;
+    text-decoration: none;
+    font-weight: 500;
+    font-size: 1rem;
+    transition: all 0.3s ease;
+    box-shadow: 0 4px 24px -8px rgba(0, 0, 0, 0.05);
+}
+
+.btn-glass:hover {
+    background: rgba(255, 255, 255, 0.8);
+    transform: translateY(-2px);
+}
+
+.pricing-section {
+    display: flex;
+    justify-content: center;
+    gap: 2.5rem;
+    padding: 4rem 0 8rem;
+    flex-wrap: wrap;
+}
+
+.glass-panel {
+    background: rgba(255, 255, 255, 0.4);
+    backdrop-filter: blur(24px);
+    -webkit-backdrop-filter: blur(24px);
+    border: 1px solid rgba(255, 255, 255, 0.9);
+    border-radius: 20px;
+    padding: 3.5rem 2.5rem;
+    width: 100%;
+    max-width: 400px;
+    box-shadow: 0 10px 40px -10px rgba(0, 0, 0, 0.03);
+    transition: transform 0.4s ease;
+    display: flex;
+    flex-direction: column;
+}
+
+.glass-panel:hover {
+    transform: translateY(-8px);
+}
+
+.accent-panel {
+    border: 1px solid #000000;
+    background: rgba(252, 252, 252, 0.6);
+}
+
+.tier-name {
+    font-size: 1.1rem;
+    font-weight: 500;
+    margin-bottom: 1rem;
+    text-transform: uppercase;
+    letter-spacing: 2px;
+    color: #666666;
+}
+
+.accent-panel .tier-name {
+    color: #000000;
+}
+
+.price {
+    font-size: 3.5rem;
+    font-weight: 300;
+    margin-bottom: 2.5rem;
+    letter-spacing: -1px;
+}
+
+.price span {
+    font-size: 1.1rem;
+    color: #888888;
+    letter-spacing: 0;
+}
+
+.features {
+    list-style: none;
+    margin-bottom: 3rem;
+    flex-grow: 1;
+}
+
+.features li {
+    margin-bottom: 1.25rem;
+    color: #222222;
+    display: flex;
+    align-items: center;
+    gap: 0.75rem;
+    font-size: 1.05rem;
+    font-weight: 300;
+}
+
+.features li::before {
+    content: '';
+    display: inline-block;
+    width: 6px;
+    height: 6px;
+    border-radius: 50%;
+    background: #000000;
+}
+
+.footer {
+    text-align: center;
+    padding: 3rem 0;
+    color: #888888;
+    font-size: 0.9rem;
+    font-weight: 300;
+    border-top: 1px solid rgba(0, 0, 0, 0.04);
+}
+</style>
+</head>
+<body>
+
+<div class="background-elements">
+    <div class="blur-shape shape-1"></div>
+    <div class="blur-shape shape-2"></div>
+</div>
+
+<div class="container">
+    <header>
+        <div class="brand">
+            Esoterica <span class="brand-sub">by esoteric.win</span>
+        </div>
+        <a href="#login" class="nav-link">Client Portal</a>
+    </header>
+
+    <section class="hero">
+        <h1>Refined organization.</h1>
+        <p>Seamless integration and unparalleled control. Elevate your community experience with modern administration tools tailored for excellence.</p>
+        <div class="button-group">
+            <a href="#pricing" class="btn-solid">View Options</a>
+            <a href="#contact" class="btn-glass">Contact Sales</a>
+        </div>
+    </section>
+
+    <section id="pricing" class="pricing-section">
+        <div class="glass-panel">
+            <div class="tier-name">Subscription</div>
+            <div class="price">$15<span>/mo</span></div>
+            <ul class="features">
+                <li>Automated administration</li>
+                <li>Advanced analytics</li>
+                <li>Priority support access</li>
+                <li>Custom dashboard</li>
+            </ul>
+            <a href="#subscribe" class="btn-glass" style="text-align: center; width: 100%;">Select Monthly</a>
+        </div>
+
+        <div class="glass-panel accent-panel">
+            <div class="tier-name">License Tier</div>
+            <div class="price">$150<span>/one-time</span></div>
+            <ul class="features">
+                <li>Complete feature access</li>
+                <li>White-label solutions</li>
+                <li>Dedicated account manager</li>
+                <li>Unlimited scale</li>
+            </ul>
+            <a href="#purchase" class="btn-solid" style="text-align: center; width: 100%;">Purchase License</a>
+        </div>
+    </section>
+
+    <footer class="footer">
+        &copy; 2026 esoteric.win. All rights reserved.
+    </footer>
+</div>
+
+</body>
+</html>
