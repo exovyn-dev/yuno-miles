@@ -36,8 +36,9 @@ body {
 .blur-shape {
     position: absolute;
     border-radius: 50%;
-    filter: blur(120px);
+    filter: blur(100px);
     opacity: 0.6;
+    will-change: transform;
 }
 
 .shape-1 {
@@ -170,11 +171,51 @@ header {
     transform: translateY(-2px);
 }
 
+.section-title {
+    text-align: center;
+    font-size: 2.5rem;
+    font-weight: 300;
+    letter-spacing: -1px;
+    margin-bottom: 4rem;
+    color: #000000;
+}
+
+.features-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+    gap: 2rem;
+    padding: 4rem 0;
+}
+
+.feature-card {
+    background: rgba(255, 255, 255, 0.4);
+    backdrop-filter: blur(16px);
+    -webkit-backdrop-filter: blur(16px);
+    border: 1px solid rgba(255, 255, 255, 0.9);
+    border-radius: 16px;
+    padding: 2.5rem;
+    box-shadow: 0 4px 24px -8px rgba(0, 0, 0, 0.03);
+}
+
+.feature-title {
+    font-size: 1.25rem;
+    font-weight: 500;
+    margin-bottom: 1rem;
+    color: #000000;
+}
+
+.feature-desc {
+    font-size: 1rem;
+    color: #666666;
+    line-height: 1.6;
+    font-weight: 300;
+}
+
 .pricing-section {
     display: flex;
     justify-content: center;
     gap: 2.5rem;
-    padding: 4rem 0 8rem;
+    padding: 6rem 0 8rem;
     flex-wrap: wrap;
 }
 
@@ -253,6 +294,56 @@ header {
     background: #000000;
 }
 
+.faq-section {
+    padding: 4rem 0 8rem;
+    max-width: 800px;
+    margin: 0 auto;
+}
+
+details {
+    margin-bottom: 1rem;
+    background: rgba(255, 255, 255, 0.3);
+    backdrop-filter: blur(12px);
+    -webkit-backdrop-filter: blur(12px);
+    border: 1px solid rgba(255, 255, 255, 0.6);
+    border-radius: 12px;
+    overflow: hidden;
+}
+
+summary {
+    padding: 1.5rem;
+    font-size: 1.1rem;
+    font-weight: 500;
+    cursor: pointer;
+    list-style: none;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
+
+summary::-webkit-details-marker {
+    display: none;
+}
+
+summary::after {
+    content: '+';
+    font-size: 1.5rem;
+    font-weight: 300;
+    color: #000000;
+    transition: transform 0.3s ease;
+}
+
+details[open] summary::after {
+    transform: rotate(45deg);
+}
+
+.faq-content {
+    padding: 0 1.5rem 1.5rem;
+    font-weight: 300;
+    color: #555555;
+    line-height: 1.6;
+}
+
 .footer {
     text-align: center;
     padding: 3rem 0;
@@ -275,7 +366,7 @@ header {
         <div class="brand">
             Esoterica <span class="brand-sub">by esoteric.win</span>
         </div>
-        <a href="#login" class="nav-link">Client Portal</a>
+        <a href="#portal" class="nav-link">Client Portal</a>
     </header>
 
     <section class="hero">
@@ -283,11 +374,42 @@ header {
         <p>Seamless integration and unparalleled control. Elevate your community experience with modern administration tools tailored for excellence.</p>
         <div class="button-group">
             <a href="#pricing" class="btn-solid">View Options</a>
-            <a href="#contact" class="btn-glass">Contact Sales</a>
+            <a href="#features" class="btn-glass">Explore Features</a>
+        </div>
+    </section>
+
+    <section id="features" style="padding-top: 4rem;">
+        <h2 class="section-title">Uncompromising quality.</h2>
+        <div class="features-grid">
+            <div class="feature-card">
+                <div class="feature-title">Audience Analytics</div>
+                <div class="feature-desc">Gain profound insights into engagement metrics. Understand your demographic with precision and clarity.</div>
+            </div>
+            <div class="feature-card">
+                <div class="feature-title">Automated Workflows</div>
+                <div class="feature-desc">Streamline operations with sophisticated rule sets. Reduce manual oversight while maintaining strict standards.</div>
+            </div>
+            <div class="feature-card">
+                <div class="feature-title">Custom Branding</div>
+                <div class="feature-desc">Present a cohesive identity. Modify visual parameters to ensure the service acts as an extension of your brand.</div>
+            </div>
+            <div class="feature-card">
+                <div class="feature-title">Enterprise Security</div>
+                <div class="feature-desc">Protect your environment with stringent access controls and persistent monitoring systems.</div>
+            </div>
+            <div class="feature-card">
+                <div class="feature-title">Scalable Infrastructure</div>
+                <div class="feature-desc">Built to handle continuous growth without performance degradation or resource limitations.</div>
+            </div>
+            <div class="feature-card">
+                <div class="feature-title">Dedicated Support</div>
+                <div class="feature-desc">Direct access to knowledgeable personnel. Resolve inquiries swiftly to minimize any operational friction.</div>
+            </div>
         </div>
     </section>
 
     <section id="pricing" class="pricing-section">
+        <h2 class="section-title" style="width: 100%;">Select your tier.</h2>
         <div class="glass-panel">
             <div class="tier-name">Subscription</div>
             <div class="price">$15<span>/mo</span></div>
@@ -311,6 +433,31 @@ header {
             </ul>
             <a href="#purchase" class="btn-solid" style="text-align: center; width: 100%;">Purchase License</a>
         </div>
+    </section>
+
+    <section class="faq-section">
+        <h2 class="section-title">Common inquiries.</h2>
+        
+        <details>
+            <summary>How is the license tier applied?</summary>
+            <div class="faq-content">
+                Upon securing a lifetime license, your account is permanently elevated. There are no recurring fees, and you receive all future updates to the core administrative suite automatically.
+            </div>
+        </details>
+
+        <details>
+            <summary>Can I transition from monthly to a license?</summary>
+            <div class="faq-content">
+                Yes. Active subscribers can upgrade to the license tier at any time through the client portal. The transition is immediate and does not disrupt your current configurations.
+            </div>
+        </details>
+
+        <details>
+            <summary>What encompasses the white-label solution?</summary>
+            <div class="faq-content">
+                The white-label solution allows you to mask our branding entirely. You can implement your own nomenclature, avatars, and visual themes to create a unified experience for your audience.
+            </div>
+        </details>
     </section>
 
     <footer class="footer">
