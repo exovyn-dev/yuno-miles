@@ -3,25 +3,30 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Esoterica | Exclusive Administration</title>
+<title>Esoterica | Absolute Dominance</title>
+<link href="https://fonts.googleapis.com/css2?family=Cinzel:wght@400;700;900&family=Rajdhani:wght@300;500;700&display=swap" rel="stylesheet">
 <style>
-@import url('https://fonts.googleapis.com/css2?family=Inter:wght@100;200;300;400;500&display=swap');
+:root {
+    --bg-primary: #05000a;
+    --accent-glow: #8b5cf6;
+    --accent-crimson: #e11d48;
+    --text-main: #f8fafc;
+    --text-muted: #94a3b8;
+}
 
 * {
     margin: 0;
     padding: 0;
     box-sizing: border-box;
-    font-family: 'Inter', sans-serif;
 }
 
 body {
-    background-color: #000000;
-    color: #ffffff;
-    min-height: 100vh;
+    background-color: var(--bg-primary);
+    color: var(--text-main);
+    font-family: 'Rajdhani', sans-serif;
     overflow-x: hidden;
-    position: relative;
     opacity: 0;
-    transition: opacity 1.2s cubic-bezier(0.2, 0.8, 0.2, 1);
+    transition: opacity 1s ease-in;
 }
 
 body.loaded {
@@ -29,7 +34,7 @@ body.loaded {
 }
 
 ::selection {
-    background: rgba(255, 255, 255, 0.15);
+    background: var(--accent-glow);
     color: #ffffff;
 }
 
@@ -41,431 +46,537 @@ body.loaded {
     height: 100vh;
     background: #000000;
     display: flex;
+    flex-direction: column;
     justify-content: center;
     align-items: center;
-    z-index: 9999;
-    transition: opacity 1.5s cubic-bezier(0.8, 0, 0.2, 1), visibility 1.5s;
+    z-index: 99999;
+    transition: transform 1.2s cubic-bezier(0.77, 0, 0.17, 1), opacity 1s;
 }
 
-#loader img {
-    width: 70px;
-    height: 70px;
-    animation: breathe 3s infinite cubic-bezier(0.4, 0, 0.2, 1);
-    opacity: 0.8;
+.loader-logo {
+    width: 120px;
+    height: 120px;
+    filter: drop-shadow(0 0 20px var(--accent-glow));
+    animation: glitchAnim 2s infinite;
 }
 
-@keyframes breathe {
-    0% { transform: scale(0.95); opacity: 0.3; filter: blur(2px); }
-    50% { transform: scale(1.05); opacity: 1; filter: blur(0px); }
-    100% { transform: scale(0.95); opacity: 0.3; filter: blur(2px); }
+.loader-text {
+    margin-top: 2rem;
+    font-family: 'Cinzel', serif;
+    font-size: 1.5rem;
+    letter-spacing: 10px;
+    color: var(--accent-glow);
+    animation: pulseText 1.5s infinite alternate;
 }
 
-.liquid-bg {
+.vfx-background {
     position: fixed;
     top: 0;
     left: 0;
     width: 100vw;
     height: 100vh;
-    z-index: -3;
-    background: #000000;
+    z-index: -10;
+    background: radial-gradient(circle at 50% 50%, #1a0b2e 0%, #000000 100%);
     overflow: hidden;
 }
 
-.liquid-orb {
+.scanline {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100vw;
+    height: 10vh;
+    background: linear-gradient(to bottom, transparent, rgba(139, 92, 246, 0.1), transparent);
+    z-index: 999;
+    pointer-events: none;
+    animation: scan 6s linear infinite;
+}
+
+.particle {
     position: absolute;
+    background: var(--accent-glow);
     border-radius: 50%;
-    filter: blur(120px);
-    opacity: 0.4;
-    animation: liquidMotion 30s infinite alternate cubic-bezier(0.4, 0, 0.2, 1);
-    will-change: transform;
-}
-
-.orb-1 {
-    width: 60vw;
-    height: 60vw;
-    background: #1a1a1a;
-    top: -20%;
-    left: -15%;
-}
-
-.orb-2 {
-    width: 70vw;
-    height: 70vw;
-    background: #0d0d0d;
-    bottom: -25%;
-    right: -20%;
-    animation-delay: -15s;
-    animation-duration: 35s;
-}
-
-.glass-overlay {
-    position: fixed;
-    top: 0;
-    left: 0;
-    width: 100vw;
-    height: 100vh;
-    z-index: -2;
-    backdrop-filter: blur(80px) saturate(120%);
-    -webkit-backdrop-filter: blur(80px) saturate(120%);
-    background: radial-gradient(circle at 50% 50%, rgba(0,0,0,0) 0%, rgba(0,0,0,0.8) 100%);
-}
-
-.noise-overlay {
-    position: fixed;
-    top: 0;
-    left: 0;
-    width: 100vw;
-    height: 100vh;
-    z-index: -1;
-    opacity: 0.03;
-    background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 200 200' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='noiseFilter'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.65' numOctaves='3' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23noiseFilter)'/%3E%3C/svg%3E");
-}
-
-.container {
-    max-width: 1400px;
-    margin: 0 auto;
-    padding: 0 5%;
-    position: relative;
-    z-index: 10;
+    filter: blur(2px);
+    pointer-events: none;
+    animation: floatUp linear forwards;
 }
 
 header {
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
-    padding: 2.5rem 0;
     position: fixed;
     top: 0;
     left: 0;
     width: 100%;
-    z-index: 100;
-    padding-left: 5%;
-    padding-right: 5%;
-    transition: all 0.6s cubic-bezier(0.2, 0.8, 0.2, 1);
+    padding: 1.5rem 4rem;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    z-index: 1000;
+    background: linear-gradient(to bottom, rgba(0,0,0,0.9), transparent);
+    backdrop-filter: blur(10px);
+    border-bottom: 1px solid rgba(139, 92, 246, 0.2);
 }
 
-header.scrolled {
-    padding: 1.25rem 5%;
-    background: rgba(0, 0, 0, 0.4);
-    backdrop-filter: blur(50px) saturate(200%);
-    -webkit-backdrop-filter: blur(50px) saturate(200%);
-    border-bottom: 1px solid rgba(255, 255, 255, 0.03);
-}
-
-.brand {
+.brand-container {
     display: flex;
     align-items: center;
-    gap: 1.25rem;
-    font-size: 1.2rem;
-    font-weight: 300;
-    letter-spacing: 2px;
-    text-transform: uppercase;
+    gap: 1.5rem;
 }
 
-.brand img {
-    width: 32px;
-    height: 32px;
-    border-radius: 8px;
-    opacity: 0.9;
+.brand-logo {
+    width: 50px;
+    height: 50px;
+    border-radius: 12px;
+    box-shadow: 0 0 25px rgba(139, 92, 246, 0.5);
+    transition: transform 0.3s ease;
+}
+
+.brand-logo:hover {
+    transform: rotate(360deg) scale(1.1);
+}
+
+.brand-name {
+    font-family: 'Cinzel', serif;
+    font-size: 2rem;
+    font-weight: 900;
+    letter-spacing: 4px;
+    text-transform: uppercase;
+    background: linear-gradient(90deg, #fff, var(--accent-glow));
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
 }
 
 .brand-sub {
-    font-size: 0.75rem;
-    color: #666666;
-    font-weight: 300;
-    letter-spacing: 4px;
+    display: block;
+    font-family: 'Rajdhani', sans-serif;
+    font-size: 0.9rem;
+    letter-spacing: 8px;
+    color: var(--text-muted);
 }
 
-.nav-link {
-    text-decoration: none;
-    color: #ffffff;
-    font-weight: 300;
-    font-size: 0.85rem;
-    letter-spacing: 1px;
+.nav-btn {
+    padding: 1rem 2.5rem;
+    background: transparent;
+    border: 2px solid var(--accent-glow);
+    color: #fff;
+    font-family: 'Rajdhani', sans-serif;
+    font-size: 1.1rem;
+    font-weight: 700;
+    letter-spacing: 2px;
     text-transform: uppercase;
-    padding: 1rem 2rem;
-    border-radius: 40px;
-    background: rgba(255, 255, 255, 0.02);
-    backdrop-filter: blur(30px);
-    -webkit-backdrop-filter: blur(30px);
-    border: 1px solid rgba(255, 255, 255, 0.05);
-    box-shadow: inset 0 1px 1px rgba(255, 255, 255, 0.03);
-    transition: all 0.5s cubic-bezier(0.2, 0.8, 0.2, 1);
+    position: relative;
+    overflow: hidden;
+    cursor: pointer;
+    text-decoration: none;
+    transition: all 0.3s ease;
+    box-shadow: 0 0 15px rgba(139, 92, 246, 0.3) inset;
 }
 
-.nav-link:hover {
-    background: rgba(255, 255, 255, 0.05);
-    border-color: rgba(255, 255, 255, 0.1);
+.nav-btn::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: -100%;
+    width: 100%;
+    height: 100%;
+    background: var(--accent-glow);
+    transition: left 0.4s cubic-bezier(0.77, 0, 0.17, 1);
+    z-index: -1;
+}
+
+.nav-btn:hover::before {
+    left: 0;
+}
+
+.nav-btn:hover {
+    box-shadow: 0 0 30px var(--accent-glow);
+    text-shadow: 0 0 10px #fff;
 }
 
 .hero {
     min-height: 100vh;
     display: flex;
     align-items: center;
-    justify-content: space-between;
-    padding-top: 5rem;
-    gap: 5rem;
+    justify-content: center;
+    padding: 0 5%;
+    position: relative;
 }
 
 .hero-content {
-    flex: 1.2;
-    max-width: 750px;
+    flex: 1;
+    z-index: 10;
+    padding-right: 5rem;
 }
 
-.hero h1 {
+.glitch-title {
+    font-family: 'Cinzel', serif;
     font-size: 6rem;
-    font-weight: 100;
+    font-weight: 900;
+    line-height: 1.1;
     margin-bottom: 2rem;
-    letter-spacing: -3.5px;
-    line-height: 1;
-    color: #ffffff;
-}
-
-.hero p {
-    font-size: 1.25rem;
-    color: #777777;
-    margin-bottom: 4.5rem;
-    font-weight: 200;
-    line-height: 1.8;
-    min-height: 4.5rem;
-    max-width: 600px;
-}
-
-.typewriter-text {
-    border-right: 1px solid #ffffff;
-    white-space: pre-wrap;
-    display: inline;
-    animation: blink 1s step-end infinite;
-}
-
-.hero-visual {
-    flex: 0.8;
-    display: flex;
-    justify-content: center;
-    align-items: center;
     position: relative;
+    text-shadow: 0 0 20px rgba(139, 92, 246, 0.6);
 }
 
-.hero-logo-container {
-    width: 450px;
-    height: 450px;
-    background: rgba(10, 10, 10, 0.2);
-    backdrop-filter: blur(60px) saturate(150%);
-    -webkit-backdrop-filter: blur(60px) saturate(150%);
-    border: 1px solid rgba(255, 255, 255, 0.03);
-    border-radius: 50%;
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    box-shadow: 0 40px 80px rgba(0, 0, 0, 0.8), inset 0 2px 5px rgba(255, 255, 255, 0.02);
-    animation: levitate 12s ease-in-out infinite;
-    position: relative;
+.glitch-title::before, .glitch-title::after {
+    content: 'ARCANE\A CONTROL';
+    white-space: pre;
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background: var(--bg-primary);
 }
 
-.hero-logo-container img {
-    width: 160px;
-    height: 160px;
-    opacity: 0.8;
-    filter: drop-shadow(0 0 30px rgba(255,255,255,0.1));
-    transition: all 0.8s ease;
+.glitch-title::before {
+    left: 4px;
+    text-shadow: -2px 0 var(--accent-crimson);
+    animation: glitch-anim-1 2s infinite linear alternate-reverse;
 }
 
-.hero-logo-container:hover img {
-    opacity: 1;
-    filter: drop-shadow(0 0 40px rgba(255,255,255,0.2));
+.glitch-title::after {
+    left: -4px;
+    text-shadow: -2px 0 var(--accent-glow);
+    animation: glitch-anim-2 3s infinite linear alternate-reverse;
 }
 
-.button-group {
+.hero-typewriter {
+    font-size: 1.5rem;
+    color: var(--text-muted);
+    min-height: 80px;
+    margin-bottom: 3rem;
+    letter-spacing: 1px;
+    border-right: 3px solid var(--accent-glow);
+    display: inline-block;
+    padding-right: 10px;
+    animation: blinkCursor 0.75s step-end infinite;
+}
+
+.action-group {
     display: flex;
     gap: 2rem;
 }
 
-.btn-solid {
-    padding: 1.25rem 3rem;
-    border-radius: 40px;
-    background: #ffffff;
-    color: #000000;
-    text-decoration: none;
-    font-weight: 400;
-    font-size: 0.9rem;
+.btn-primary, .btn-secondary {
+    padding: 1.2rem 3rem;
+    font-family: 'Rajdhani', sans-serif;
+    font-size: 1.2rem;
+    font-weight: 700;
+    letter-spacing: 3px;
     text-transform: uppercase;
-    letter-spacing: 2px;
-    transition: all 0.5s cubic-bezier(0.2, 0.8, 0.2, 1);
+    text-decoration: none;
+    clip-path: polygon(10% 0, 100% 0, 90% 100%, 0% 100%);
+    transition: all 0.3s ease;
 }
 
-.btn-solid:hover {
-    background: #d4d4d4;
-    transform: translateY(-2px);
-    box-shadow: 0 15px 40px rgba(255, 255, 255, 0.1);
+.btn-primary {
+    background: var(--accent-glow);
+    color: #fff;
+    box-shadow: 0 0 20px rgba(139, 92, 246, 0.6);
 }
 
-.btn-glass {
-    padding: 1.25rem 3rem;
-    border-radius: 40px;
+.btn-primary:hover {
+    background: #fff;
+    color: var(--bg-primary);
+    box-shadow: 0 0 40px var(--accent-glow);
+    transform: scale(1.05);
+}
+
+.btn-secondary {
     background: transparent;
-    border: 1px solid rgba(255, 255, 255, 0.15);
-    color: #ffffff;
-    text-decoration: none;
-    font-weight: 300;
-    font-size: 0.9rem;
-    text-transform: uppercase;
-    letter-spacing: 2px;
-    transition: all 0.5s cubic-bezier(0.2, 0.8, 0.2, 1);
+    color: var(--accent-glow);
+    border: 1px solid var(--accent-glow);
+    backdrop-filter: blur(5px);
 }
 
-.btn-glass:hover {
-    background: rgba(255, 255, 255, 0.05);
-    border-color: rgba(255, 255, 255, 0.3);
+.btn-secondary:hover {
+    background: rgba(139, 92, 246, 0.2);
+    transform: scale(1.05);
+}
+
+.hero-visual {
+    flex: 1;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    position: relative;
+    height: 600px;
+}
+
+.magic-circle {
+    position: absolute;
+    width: 500px;
+    height: 500px;
+    border-radius: 50%;
+    border: 2px dashed rgba(139, 92, 246, 0.3);
+    animation: spin 30s linear infinite;
+}
+
+.magic-circle::before {
+    content: '';
+    position: absolute;
+    top: -20px; left: -20px; right: -20px; bottom: -20px;
+    border-radius: 50%;
+    border: 1px solid rgba(225, 29, 72, 0.2);
+    animation: spin 20s linear infinite reverse;
+}
+
+.magic-circle::after {
+    content: '';
+    position: absolute;
+    top: 40px; left: 40px; right: 40px; bottom: 40px;
+    border-radius: 50%;
+    border: 4px double rgba(139, 92, 246, 0.5);
+    box-shadow: 0 0 30px rgba(139, 92, 246, 0.2) inset;
+    animation: spin 15s linear infinite;
+}
+
+.hero-crow {
+    width: 250px;
+    height: 250px;
+    z-index: 10;
+    filter: drop-shadow(0 0 40px var(--accent-glow));
+    animation: hoverCrow 4s ease-in-out infinite;
+}
+
+.section-container {
+    padding: 10rem 5%;
+    position: relative;
+}
+
+.section-header {
+    text-align: center;
+    margin-bottom: 6rem;
 }
 
 .section-title {
-    text-align: center;
-    font-size: 3.5rem;
-    font-weight: 100;
-    letter-spacing: -1.5px;
-    margin-bottom: 6rem;
-    color: #ffffff;
+    font-family: 'Cinzel', serif;
+    font-size: 4rem;
+    font-weight: 900;
+    text-transform: uppercase;
+    letter-spacing: 5px;
+    color: #fff;
+    text-shadow: 0 0 20px var(--accent-glow);
+    margin-bottom: 1rem;
+}
+
+.section-subtitle {
+    color: var(--accent-crimson);
+    font-size: 1.2rem;
+    letter-spacing: 10px;
+    text-transform: uppercase;
 }
 
 .features-grid {
     display: grid;
     grid-template-columns: repeat(auto-fit, minmax(350px, 1fr));
     gap: 3rem;
-    padding: 0 0 12rem;
 }
 
 .feature-card {
-    background: rgba(10, 10, 10, 0.3);
-    backdrop-filter: blur(50px) saturate(120%);
-    -webkit-backdrop-filter: blur(50px) saturate(120%);
-    border: 1px solid rgba(255, 255, 255, 0.04);
-    border-radius: 40px;
-    padding: 4rem 3.5rem;
-    transition: all 0.7s cubic-bezier(0.2, 0.8, 0.2, 1);
+    background: rgba(10, 5, 20, 0.6);
+    border: 1px solid rgba(139, 92, 246, 0.2);
+    padding: 3rem;
     position: relative;
     overflow: hidden;
+    transition: all 0.5s ease;
+    backdrop-filter: blur(10px);
+    transform-style: preserve-3d;
+}
+
+.feature-card::before {
+    content: '';
+    position: absolute;
+    top: 0; left: 0;
+    width: 100%; height: 2px;
+    background: linear-gradient(90deg, transparent, var(--accent-glow), transparent);
+    transform: translateX(-100%);
+    transition: transform 0.5s ease;
 }
 
 .feature-card:hover {
-    background: rgba(15, 15, 15, 0.5);
-    border-color: rgba(255, 255, 255, 0.08);
-    transform: translateY(-5px);
+    border-color: var(--accent-glow);
+    box-shadow: 0 10px 40px rgba(139, 92, 246, 0.2), 0 0 10px var(--accent-glow) inset;
+    transform: translateY(-10px) rotateX(5deg) rotateY(5deg);
 }
 
-.feature-title {
-    font-size: 1.2rem;
-    font-weight: 300;
+.feature-card:hover::before {
+    transform: translateX(100%);
+}
+
+.feature-icon {
+    font-size: 3rem;
+    color: var(--accent-glow);
     margin-bottom: 1.5rem;
-    color: #ffffff;
-    letter-spacing: 1px;
-    text-transform: uppercase;
+    display: inline-block;
+    filter: drop-shadow(0 0 10px var(--accent-glow));
 }
 
-.feature-desc {
-    font-size: 1.05rem;
-    color: #666666;
-    line-height: 1.8;
-    font-weight: 200;
+.feature-name {
+    font-family: 'Cinzel', serif;
+    font-size: 1.8rem;
+    margin-bottom: 1rem;
+    letter-spacing: 2px;
+    color: #fff;
 }
 
-.pricing-section {
+.feature-text {
+    font-size: 1.1rem;
+    color: var(--text-muted);
+    line-height: 1.7;
+}
+
+.pricing-wrapper {
     display: flex;
     justify-content: center;
     gap: 4rem;
-    padding: 0 0 14rem;
     flex-wrap: wrap;
 }
 
-.glass-panel {
-    background: rgba(8, 8, 8, 0.4);
-    backdrop-filter: blur(60px) saturate(150%);
-    -webkit-backdrop-filter: blur(60px) saturate(150%);
-    border: 1px solid rgba(255, 255, 255, 0.03);
-    border-radius: 48px;
-    padding: 5rem 4rem;
+.price-card {
+    background: linear-gradient(135deg, rgba(20, 10, 40, 0.8) 0%, rgba(5, 0, 10, 0.9) 100%);
+    border: 1px solid rgba(139, 92, 246, 0.3);
+    padding: 4rem;
     width: 100%;
-    max-width: 480px;
-    transition: all 0.8s cubic-bezier(0.2, 0.8, 0.2, 1);
-    display: flex;
-    flex-direction: column;
+    max-width: 500px;
+    position: relative;
+    transition: all 0.5s cubic-bezier(0.25, 0.8, 0.25, 1);
+    clip-path: polygon(0 0, 100% 0, 100% 95%, 95% 100%, 0 100%);
 }
 
-.glass-panel:hover {
-    border-color: rgba(255, 255, 255, 0.06);
-    background: rgba(12, 12, 12, 0.5);
+.price-card.elite {
+    border-color: var(--accent-crimson);
+    box-shadow: 0 0 30px rgba(225, 29, 72, 0.15) inset;
 }
 
-.accent-panel {
-    background: linear-gradient(180deg, rgba(20, 20, 20, 0.6) 0%, rgba(5, 5, 5, 0.6) 100%);
-    border: 1px solid rgba(255, 255, 255, 0.08);
+.price-card:hover {
+    transform: translateY(-15px) scale(1.02);
+    box-shadow: 0 20px 50px rgba(139, 92, 246, 0.3), 0 0 20px var(--accent-glow) inset;
 }
 
-.accent-panel:hover {
-    border-color: rgba(255, 255, 255, 0.15);
+.price-card.elite:hover {
+    box-shadow: 0 20px 50px rgba(225, 29, 72, 0.3), 0 0 20px var(--accent-crimson) inset;
 }
 
-.tier-name {
-    font-size: 0.9rem;
-    font-weight: 400;
-    margin-bottom: 2rem;
-    text-transform: uppercase;
-    letter-spacing: 4px;
-    color: #777777;
+.tier-label {
+    font-family: 'Cinzel', serif;
+    font-size: 2rem;
+    color: #fff;
+    margin-bottom: 1rem;
+    letter-spacing: 3px;
 }
 
-.accent-panel .tier-name {
-    color: #ffffff;
+.elite .tier-label {
+    color: var(--accent-crimson);
+    text-shadow: 0 0 15px var(--accent-crimson);
 }
 
-.price {
+.price-value {
     font-size: 5rem;
-    font-weight: 100;
-    margin-bottom: 4rem;
-    letter-spacing: -3px;
-    color: #ffffff;
-}
-
-.price span {
-    font-size: 1.1rem;
-    color: #555555;
-    letter-spacing: 0;
-    font-weight: 300;
-}
-
-.features {
-    list-style: none;
-    margin-bottom: 5rem;
-    flex-grow: 1;
-}
-
-.features li {
+    font-weight: 700;
+    color: #fff;
     margin-bottom: 2rem;
-    color: #888888;
+    text-shadow: 0 0 20px rgba(255,255,255,0.5);
+    display: flex;
+    align-items: baseline;
+}
+
+.price-value span {
+    font-size: 1.5rem;
+    color: var(--text-muted);
+    font-weight: 300;
+    margin-left: 10px;
+}
+
+.price-list {
+    list-style: none;
+    margin-bottom: 4rem;
+}
+
+.price-list li {
+    font-size: 1.2rem;
+    color: #e2e8f0;
+    margin-bottom: 1.5rem;
     display: flex;
     align-items: center;
-    gap: 1.5rem;
-    font-size: 1.05rem;
-    font-weight: 200;
+    gap: 15px;
 }
 
-.features li::before {
-    content: '';
-    display: inline-block;
-    width: 4px;
-    height: 4px;
-    border-radius: 50%;
-    background: #ffffff;
-    opacity: 0.3;
+.price-list li::before {
+    content: '◈';
+    color: var(--accent-glow);
+    font-size: 1.5rem;
+    filter: drop-shadow(0 0 5px var(--accent-glow));
 }
 
-.accent-panel .features li::before {
-    opacity: 0.8;
+.elite .price-list li::before {
+    color: var(--accent-crimson);
+    filter: drop-shadow(0 0 5px var(--accent-crimson));
+}
+
+.price-btn {
+    display: block;
+    width: 100%;
+    text-align: center;
+    padding: 1.5rem;
+    font-family: 'Rajdhani', sans-serif;
+    font-size: 1.5rem;
+    font-weight: 700;
+    letter-spacing: 4px;
+    text-transform: uppercase;
+    text-decoration: none;
+    color: #fff;
+    background: rgba(139, 92, 246, 0.2);
+    border: 1px solid var(--accent-glow);
+    transition: all 0.3s ease;
+}
+
+.price-btn:hover {
+    background: var(--accent-glow);
+    box-shadow: 0 0 30px var(--accent-glow);
+}
+
+.elite .price-btn {
+    background: rgba(225, 29, 72, 0.2);
+    border-color: var(--accent-crimson);
+}
+
+.elite .price-btn:hover {
+    background: var(--accent-crimson);
+    box-shadow: 0 0 30px var(--accent-crimson);
+}
+
+footer {
+    padding: 4rem 0;
+    text-align: center;
+    border-top: 1px solid rgba(139, 92, 246, 0.2);
+    background: #000;
+    position: relative;
+}
+
+.footer-logo {
+    width: 40px;
+    height: 40px;
+    margin-bottom: 1rem;
+    opacity: 0.5;
+    transition: opacity 0.3s;
+}
+
+.footer-logo:hover {
+    opacity: 1;
+    filter: drop-shadow(0 0 10px var(--accent-glow));
+}
+
+.footer-text {
+    font-size: 1rem;
+    color: #64748b;
+    letter-spacing: 2px;
 }
 
 .reveal {
     opacity: 0;
-    transform: translateY(40px);
-    transition: all 1.2s cubic-bezier(0.2, 0.8, 0.2, 1);
+    transform: translateY(100px);
+    transition: all 1s cubic-bezier(0.25, 0.8, 0.25, 1);
 }
 
 .reveal.active {
@@ -473,189 +584,295 @@ header.scrolled {
     transform: translateY(0);
 }
 
-.delay-1 { transition-delay: 0.1s; }
-.delay-2 { transition-delay: 0.2s; }
-.delay-3 { transition-delay: 0.3s; }
-
-.footer {
-    text-align: center;
-    padding: 6rem 0;
-    color: #444444;
-    font-size: 0.85rem;
-    font-weight: 200;
-    letter-spacing: 2px;
-    text-transform: uppercase;
-    border-top: 1px solid rgba(255, 255, 255, 0.02);
+@keyframes glitchAnim {
+    0% { transform: translate(0) scale(1); filter: hue-rotate(0deg); }
+    20% { transform: translate(-5px, 5px) scale(1.05); filter: hue-rotate(90deg); }
+    40% { transform: translate(-5px, -5px) scale(0.95); filter: hue-rotate(180deg); }
+    60% { transform: translate(5px, 5px) scale(1.05); filter: hue-rotate(270deg); }
+    80% { transform: translate(5px, -5px) scale(0.95); filter: hue-rotate(360deg); }
+    100% { transform: translate(0) scale(1); filter: hue-rotate(0deg); }
 }
 
-@keyframes blink {
+@keyframes pulseText {
+    from { opacity: 0.5; text-shadow: 0 0 10px var(--accent-glow); }
+    to { opacity: 1; text-shadow: 0 0 30px var(--accent-glow), 0 0 50px var(--accent-glow); }
+}
+
+@keyframes scan {
+    0% { top: -10vh; }
+    100% { top: 110vh; }
+}
+
+@keyframes floatUp {
+    0% { transform: translateY(100vh) scale(0); opacity: 0; }
+    20% { opacity: 1; scale: 1; }
+    80% { opacity: 1; }
+    100% { transform: translateY(-20vh) scale(0); opacity: 0; }
+}
+
+@keyframes glitch-anim-1 {
+    0% { clip-path: inset(20% 0 80% 0); }
+    20% { clip-path: inset(60% 0 10% 0); }
+    40% { clip-path: inset(40% 0 50% 0); }
+    60% { clip-path: inset(80% 0 5% 0); }
+    80% { clip-path: inset(10% 0 70% 0); }
+    100% { clip-path: inset(30% 0 40% 0); }
+}
+
+@keyframes glitch-anim-2 {
+    0% { clip-path: inset(10% 0 60% 0); }
+    20% { clip-path: inset(30% 0 20% 0); }
+    40% { clip-path: inset(70% 0 10% 0); }
+    60% { clip-path: inset(20% 0 50% 0); }
+    80% { clip-path: inset(50% 0 30% 0); }
+    100% { clip-path: inset(5% 0 80% 0); }
+}
+
+@keyframes hoverCrow {
+    0% { transform: translateY(0) rotate(0deg); }
+    25% { transform: translateY(-15px) rotate(2deg); }
+    50% { transform: translateY(0) rotate(0deg); }
+    75% { transform: translateY(15px) rotate(-2deg); }
+    100% { transform: translateY(0) rotate(0deg); }
+}
+
+@keyframes spin {
+    100% { transform: rotate(360deg); }
+}
+
+@keyframes blinkCursor {
     50% { border-color: transparent; }
 }
 
-@keyframes levitate {
-    0% { transform: translateY(0px); }
-    50% { transform: translateY(-30px); }
-    100% { transform: translateY(0px); }
-}
-
-@keyframes liquidMotion {
-    0% { transform: translate(0, 0) scale(1); }
-    100% { transform: translate(8%, 10%) scale(1.05); }
+@media (max-width: 1024px) {
+    .hero { flex-direction: column; padding-top: 12rem; text-align: center; }
+    .hero-content { padding-right: 0; margin-bottom: 5rem; }
+    .glitch-title { font-size: 4rem; }
+    .action-group { justify-content: center; }
+    .magic-circle { width: 350px; height: 350px; }
+    .hero-crow { width: 180px; height: 180px; }
+    .glitch-title::before, .glitch-title::after { content: 'ARCANE\A CONTROL'; }
 }
 </style>
 </head>
 <body>
 
 <div id="loader">
-    <img src="https://esoteric.win/crow.ico" alt="">
+    <img src="https://esoteric.win/crow.ico" alt="Esoterica" class="loader-logo">
+    <div class="loader-text">AWAKENING SYSTEM</div>
 </div>
 
-<div class="liquid-bg">
-    <div class="liquid-orb orb-1"></div>
-    <div class="liquid-orb orb-2"></div>
+<div class="vfx-background" id="particles">
+    <div class="scanline"></div>
 </div>
-<div class="noise-overlay"></div>
-<div class="glass-overlay"></div>
 
-<header id="navbar">
-    <div class="brand">
-        <img src="https://esoteric.win/crow.ico" alt="">
-        <span>Esoterica <span class="brand-sub">by esoteric.win</span></span>
+<header>
+    <div class="brand-container">
+        <img src="https://esoteric.win/crow.ico" alt="Logo" class="brand-logo">
+        <div>
+            <div class="brand-name">Esoterica</div>
+            <span class="brand-sub">BY ESOTERIC.WIN</span>
+        </div>
     </div>
-    <a href="#portal" class="nav-link">Clearance</a>
+    <a href="#portal" class="nav-btn">Authorize</a>
 </header>
 
-<div class="container">
+<main>
     <section class="hero">
         <div class="hero-content">
-            <h1 class="reveal active">Absolute<br>Refinement.</h1>
-            <p><span id="typewriter" class="typewriter-text"></span></p>
-            <div class="button-group reveal active delay-2">
-                <a href="#pricing" class="btn-solid">Establish</a>
-                <a href="#features" class="btn-glass">Discover</a>
+            <h1 class="glitch-title">ARCANE<br>CONTROL</h1>
+            <div class="hero-typewriter" id="typewriter"></div>
+            <div class="action-group reveal active">
+                <a href="#pricing" class="btn-primary">Initiate Sequence</a>
+                <a href="#features" class="btn-secondary">View Matrix</a>
             </div>
         </div>
-        <div class="hero-visual reveal active delay-3">
-            <div class="hero-logo-container">
-                <img src="https://esoteric.win/crow.ico" alt="">
-            </div>
+        <div class="hero-visual reveal active">
+            <div class="magic-circle"></div>
+            <img src="https://esoteric.win/crow.ico" alt="Crow" class="hero-crow">
         </div>
     </section>
 
-    <section id="features">
-        <h2 class="section-title reveal">Uncompromising standards.</h2>
+    <section id="features" class="section-container">
+        <div class="section-header reveal">
+            <h2 class="section-title">Architectural Superiority</h2>
+            <div class="section-subtitle">Beyond Standard Protocols</div>
+        </div>
         <div class="features-grid">
-            <div class="feature-card reveal delay-1">
-                <div class="feature-title">Audience Insights</div>
-                <div class="feature-desc">Observe and comprehend engagement through an elegant, unobtrusive lens.</div>
+            <div class="feature-card reveal">
+                <div class="feature-icon">✧</div>
+                <h3 class="feature-name">Omniscient Analytics</h3>
+                <p class="feature-text">Extract profound insights from the void. Monitor every interaction, demographic shift, and engagement metric in real-time with absolute precision.</p>
             </div>
-            <div class="feature-card reveal delay-2">
-                <div class="feature-title">Elegant Moderation</div>
-                <div class="feature-desc">Maintain absolute tranquility within your environment through silent, definitive rulesets.</div>
+            <div class="feature-card reveal">
+                <div class="feature-icon">✦</div>
+                <h3 class="feature-name">Automated Enforcer</h3>
+                <p class="feature-text">Deploy ruthless, logic-bound moderation systems. Obliterate chaos before it manifests using advanced, uncompromising rule matrices.</p>
             </div>
-            <div class="feature-card reveal delay-3">
-                <div class="feature-title">Bespoke Identity</div>
-                <div class="feature-desc">Mold the outward presentation to mirror the exact aesthetic of your personal brand.</div>
+            <div class="feature-card reveal">
+                <div class="feature-icon">✺</div>
+                <h3 class="feature-name">Phantom Integration</h3>
+                <p class="feature-text">Complete aesthetic assimilation. Modify avatars, nomenclature, and embeds to ensure the entity operates invisibly under your own banner.</p>
             </div>
-            <div class="feature-card reveal delay-1">
-                <div class="feature-title">Absolute Discretion</div>
-                <div class="feature-desc">A flawless perimeter guaranteeing that external disruptions never manifest.</div>
+            <div class="feature-card reveal">
+                <div class="feature-icon">🛡</div>
+                <h3 class="feature-name">Aegis Protocol</h3>
+                <p class="feature-text">Impenetrable perimeter defense. Instantly neutralize unauthorized incursions, mass raids, and destructive actions before a single node falls.</p>
             </div>
-            <div class="feature-card reveal delay-2">
-                <div class="feature-title">Infinite Capacity</div>
-                <div class="feature-desc">An architecture designed to expand limitlessly, completely unburdened by scale.</div>
+            <div class="feature-card reveal">
+                <div class="feature-icon">∞</div>
+                <h3 class="feature-name">Infinite Horizon</h3>
+                <p class="feature-text">Built upon a fractured, distributed architecture. Experience zero latency and limitless scale, regardless of your community's magnitude.</p>
             </div>
-            <div class="feature-card reveal delay-3">
-                <div class="feature-title">Concierge Support</div>
-                <div class="feature-desc">Direct, immediate correspondence with individuals dedicated to your precise requirements.</div>
-            </div>
-        </div>
-    </section>
-
-    <section id="pricing">
-        <h2 class="section-title reveal">Acquire placement.</h2>
-        <div class="pricing-section">
-            <div class="glass-panel reveal delay-1">
-                <div class="tier-name">Monthly Retainer</div>
-                <div class="price">$15<span>/mo</span></div>
-                <ul class="features">
-                    <li>Unobtrusive administration</li>
-                    <li>Comprehensive insight analysis</li>
-                    <li>Priority correspondence</li>
-                    <li>Personalized web portal</li>
-                </ul>
-                <a href="#subscribe" class="btn-glass" style="text-align: center; width: 100%;">Initialize</a>
-            </div>
-
-            <div class="glass-panel accent-panel reveal delay-2">
-                <div class="tier-name">Perpetual License</div>
-                <div class="price">$150<span>/one-time</span></div>
-                <ul class="features">
-                    <li>Unrestricted platform privileges</li>
-                    <li>Complete identity masking</li>
-                    <li>Dedicated concierge manager</li>
-                    <li>Limitless operational capacity</li>
-                </ul>
-                <a href="#purchase" class="btn-solid" style="text-align: center; width: 100%;">Acquire</a>
+            <div class="feature-card reveal">
+                <div class="feature-icon">◈</div>
+                <h3 class="feature-name">Direct Uplink</h3>
+                <p class="feature-text">Bypass the queues. Establish a direct, encrypted communication channel with the core development architecture for immediate resolution.</p>
             </div>
         </div>
     </section>
 
-    <footer class="footer reveal">
-        &copy; 2026 esoteric.win. Reserved.
-    </footer>
-</div>
+    <section id="pricing" class="section-container">
+        <div class="section-header reveal">
+            <h2 class="section-title">Acquire Power</h2>
+            <div class="section-subtitle">Select Your Paradigm</div>
+        </div>
+        <div class="pricing-wrapper">
+            <div class="price-card reveal">
+                <div class="tier-label">Initiate</div>
+                <div class="price-value">$15<span>/cycle</span></div>
+                <ul class="price-list">
+                    <li>Advanced Autonomy Systems</li>
+                    <li>Full Data Surveillance</li>
+                    <li>Priority Transmission Access</li>
+                    <li>Terminal Web Dashboard</li>
+                </ul>
+                <a href="#buy" class="price-btn">Bind Contract</a>
+            </div>
+
+            <div class="price-card elite reveal">
+                <div class="tier-label">Ascendant</div>
+                <div class="price-value">$150<span>/eternity</span></div>
+                <ul class="price-list">
+                    <li>Unrestricted Core Access</li>
+                    <li>Complete White-Label Masking</li>
+                    <li>Dedicated Network Architect</li>
+                    <li>Infinite Server Implementations</li>
+                </ul>
+                <a href="#buy" class="price-btn">Seal Fate</a>
+            </div>
+        </div>
+    </section>
+</main>
+
+<footer>
+    <img src="https://esoteric.win/crow.ico" alt="Esoterica" class="footer-logo">
+    <div class="footer-text">© 2026 ESOTERIC.WIN. ALL SYSTEMS SECURED.</div>
+</footer>
 
 <script>
 window.addEventListener('load', () => {
     setTimeout(() => {
         const loader = document.getElementById('loader');
-        loader.style.opacity = '0';
+        loader.style.transform = 'translateY(-100vh)';
         setTimeout(() => {
             loader.style.display = 'none';
             document.body.classList.add('loaded');
             startTypewriter();
-        }, 1500);
-    }, 1800);
+            initParticles();
+        }, 1200);
+    }, 2000);
 });
 
-const textToType = "Seamless integration and unparalleled control. Elevate your environment with a service tailored for absolute exclusivity.";
+const textToType = "Dominate your digital domain with unprecedented arcane tools. The ultimate authority for your server architecture awaits.";
 const typeWriterElement = document.getElementById('typewriter');
-let i = 0;
+let typeIndex = 0;
 
 function startTypewriter() {
-    if (i < textToType.length) {
-        typeWriterElement.innerHTML += textToType.charAt(i);
-        i++;
-        setTimeout(startTypewriter, 35);
+    if (typeIndex < textToType.length) {
+        typeWriterElement.innerHTML += textToType.charAt(typeIndex);
+        typeIndex++;
+        setTimeout(startTypewriter, 40);
     } else {
-        typeWriterElement.style.borderRight = "none";
+        typeWriterElement.style.animation = 'none';
+        typeWriterElement.style.borderRight = 'none';
     }
 }
 
-window.addEventListener('scroll', () => {
-    const header = document.getElementById('navbar');
-    if (window.scrollY > 50) {
-        header.classList.add('scrolled');
-    } else {
-        header.classList.remove('scrolled');
+function initParticles() {
+    const container = document.getElementById('particles');
+    const particleCount = 40;
+    
+    for (let i = 0; i < particleCount; i++) {
+        createParticle(container);
     }
-});
+}
 
-function reveal() {
-    var reveals = document.querySelectorAll('.reveal');
-    for (var j = 0; j < reveals.length; j++) {
-        var windowHeight = window.innerHeight;
-        var elementTop = reveals[j].getBoundingClientRect().top;
-        var elementVisible = 100;
+function createParticle(container) {
+    const particle = document.createElement('div');
+    particle.classList.add('particle');
+    
+    const size = Math.random() * 5 + 2;
+    particle.style.width = size + 'px';
+    particle.style.height = size + 'px';
+    
+    const posX = Math.random() * 100;
+    particle.style.left = posX + 'vw';
+    
+    const duration = Math.random() * 15 + 10;
+    particle.style.animationDuration = duration + 's';
+    
+    const delay = Math.random() * 10;
+    particle.style.animationDelay = delay + 's';
+    
+    const hue = Math.random() > 0.5 ? 'var(--accent-glow)' : 'var(--accent-crimson)';
+    particle.style.background = hue;
+    particle.style.boxShadow = '0 0 ' + (size*2) + 'px ' + hue;
+    
+    container.appendChild(particle);
+    
+    setTimeout(() => {
+        particle.remove();
+        createParticle(container);
+    }, (duration + delay) * 1000);
+}
+
+function revealElements() {
+    const reveals = document.querySelectorAll('.reveal');
+    const windowHeight = window.innerHeight;
+    
+    reveals.forEach(reveal => {
+        const elementTop = reveal.getBoundingClientRect().top;
+        const elementVisible = 150;
+        
         if (elementTop < windowHeight - elementVisible) {
-            reveals[j].classList.add('active');
+            reveal.classList.add('active');
         }
-    }
+    });
 }
 
-window.addEventListener('scroll', reveal);
-reveal();
+window.addEventListener('scroll', revealElements);
+revealElements();
+
+document.querySelectorAll('.feature-card, .price-card').forEach(card => {
+    card.addEventListener('mousemove', e => {
+        const rect = card.getBoundingClientRect();
+        const x = e.clientX - rect.left;
+        const y = e.clientY - rect.top;
+        
+        const centerX = rect.width / 2;
+        const centerY = rect.height / 2;
+        
+        const rotateX = ((y - centerY) / centerY) * -10;
+        const rotateY = ((x - centerX) / centerX) * 10;
+        
+        card.style.transform = 'perspective(1000px) rotateX(' + rotateX + 'deg) rotateY(' + rotateY + 'deg) translateY(-10px)';
+    });
+    
+    card.addEventListener('mouseleave', () => {
+        card.style.transform = 'perspective(1000px) rotateX(0) rotateY(0) translateY(0)';
+    });
+});
 </script>
 </body>
 </html>
